@@ -33,6 +33,7 @@ class doxas {
         return shader;
     }
 
+    // create program
     public createProgram(vs : WebGLShader, fs : WebGLShader) : WebGLProgram {
 
         let program : WebGLProgram = this.gl.createProgram()!;
@@ -42,10 +43,72 @@ class doxas {
 
         this.gl.linkProgram(program);
 
+        // check whether the program has linked successfully
         if (!this.gl.getProgramParameter(program, this.gl.LINK_STATUS)) {
             throw new Error('program error');
         }
         return program;
+    }
+
+    // create vbo
+    public createVBO(data : number[]) : WebGLBuffer {
+
+        let vbo : WebGLBuffer = this.gl.createBuffer()!;
+
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, vbo);
+
+        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(data), this.gl.STATIC_DRAW);
+
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
+
+        return vbo;
+    }
+
+    // set attribute
+    public setAttribute(vbo : WebGLBuffer[], attL : GLint[], attS : number[]) : void {
+        
+        for (let i : number = 0; i < vbo.length; i++) {
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, vbo[i]);
+
+            this.gl.enableVertexAttribArray(attL[i]);
+
+            this.gl.vertexAttribPointer(attL[i], attS[i], this.gl.FLOAT, false, 0, 0);
+        }
+    }
+
+    // create ibo
+    public createIBO(data : number[]) : WebGLBuffer {
+
+        let ibo : WebGLBuffer = this.gl.createBuffer()!;
+
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, ibo);
+
+        this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Int16Array(data), this.gl.STATIC_DRAW);
+
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, null);
+
+        return ibo;
+    }
+
+    // create texture
+    public createTexture(source : string, number : number) : WebGLTexture {
+
+        let img = new Image();
+        let tex : WebGLTexture = this.gl.createTexture()!;
+
+        img.onload = () => {
+
+            this.gl.bindTexture(this.gl.TEXTURE_2D, tex);
+
+            this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, img);
+
+            this.gl.generateMipmap(this.gl.TEXTURE_2D);
+
+            this.gl.bindTexture(this.gl.TEXTURE_2D, null);
+        };
+        img.src = source;
+
+        return tex;
     }
 }
 
