@@ -1,0 +1,32 @@
+{
+  "name": "GLTS",
+  "version": "1.0.0",
+  "description": "Typescript practice developing with WebGL.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode=development",
+    "start": "webpack-dev-server -mode=development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tai5863/GLTS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tai5863/GLTS/issues"
+  },
+  "homepage": "https://github.com/tai5863/GLTS#readme",
+  "devDependencies": {
+    "ts-loader": "^8.0.1",
+    "typescript": "^3.9.7",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  }
+}
