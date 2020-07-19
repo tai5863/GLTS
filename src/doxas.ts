@@ -1,3 +1,8 @@
+interface Attribute {
+    location : GLint;
+    stride : number;
+}
+
 class doxas {
     constructor(private gl : WebGLRenderingContext | WebGL2RenderingContext){}
 
@@ -65,14 +70,14 @@ class doxas {
     }
 
     // set attribute
-    public setAttribute(vbo : WebGLBuffer[], attL : GLint[], attS : number[]) : void {
+    public setAttribute(vbo : WebGLBuffer[], attributes : Attribute[]) : void {
         
         for (let i : number = 0; i < vbo.length; i++) {
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, vbo[i]);
 
-            this.gl.enableVertexAttribArray(attL[i]);
+            this.gl.enableVertexAttribArray(attributes[i].location);
 
-            this.gl.vertexAttribPointer(attL[i], attS[i], this.gl.FLOAT, false, 0, 0);
+            this.gl.vertexAttribPointer(attributes[i].location, attributes[i].stride, this.gl.FLOAT, false, 0, 0);
         }
     }
 
