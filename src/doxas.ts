@@ -49,10 +49,14 @@ class doxas {
         this.gl.linkProgram(program);
 
         // check whether the program has linked successfully
-        if (!this.gl.getProgramParameter(program, this.gl.LINK_STATUS)) {
+        if (this.gl.getProgramParameter(program, this.gl.LINK_STATUS)) {
+
+            this.gl.useProgram(program);
+
+            return program;
+        } else {
             throw new Error('program error');
         }
-        return program;
     }
 
     // create vbo

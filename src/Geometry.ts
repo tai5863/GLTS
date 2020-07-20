@@ -15,10 +15,10 @@ class glGeometry {
                 let rx : number = rr * Math.cos(tr);
                 let rz : number = rr * Math.sin(tr);
                 let tc : number[] = new Array();
-                if (color) {
-                    tc = <number[]>color;
-                } else if (color == 'hsva') {
+                if (color == 'hsva') {
                     tc = <number[]>new Color().hsva(360 / row * i, 1, 1, 1);
+                } else {
+                    tc = <number[]>color;
                 }
                 pos.push(tx, ty, tz);
                 nor.push(rx, ry, rz);

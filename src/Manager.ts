@@ -34,9 +34,12 @@ class glManager {
 
         return program;
     }
+}
 
+class glAttribute {
+    constructor(private gl : WebGLRenderingContext | WebGL2RenderingContext){}
     // AttribDataの配列を受け取って, Attributeの配列を返す
-    public getAttributes(program : WebGLProgram, attList : AttribData[]) : Attribute[] {
+    public assign(program : WebGLProgram, attList : AttribData[]) : Attribute[] {
 
         let attributes : Attribute[] = new Array();
         
@@ -50,7 +53,13 @@ class glManager {
         return attributes;
     }
 
-    public getUniforms(program : WebGLProgram, uniList : UniformData[]) : Uniform[] {
+    public set = new doxas(this.gl).setAttribute;
+}
+
+class glUniform {
+    constructor(private gl : WebGLRenderingContext | WebGL2RenderingContext){}
+
+    public assign(program : WebGLProgram, uniList : UniformData[]) : Uniform[] {
 
         let uniforms : Uniform[] = new Array();
 
@@ -63,11 +72,9 @@ class glManager {
         }
         return uniforms;
     }
-
-    // number[]でいいのか？
     // これももっと拡張する必要あり
-    public setUniforms(uniforms : Uniform[]) : void {
-
+    public set(uniforms : Uniform[]) : void {
+        
         for (let i : number = 0; i < uniforms.length; i++) {
             switch (uniforms[i].data.type) {
                 case 'm4fv':
@@ -90,4 +97,24 @@ class glManager {
     }
 }
 
-export default glManager;
+class glBuffer {
+    constructor(private gl : WebGLRenderingContext | WebGL2RenderingContext){}
+
+    public wgld = new doxas(this.gl);
+
+    public createVBO = this.wgld.createVBO;
+
+    public createIBO = this.wgld.createIBO;
+
+    public createVBOs(data : (number[])[]) : WebGLBuffer[] {
+
+        let bufferList : WebGLBuffer[] = new Array();
+        
+        for (let i : number = 0; i < data.length; i++) {
+            bufferList.push(this.createVBO(data[i]));
+        }
+        return bufferList;
+    }
+}
+
+export {glManager, glAttribute, glUniform, glBuffer};

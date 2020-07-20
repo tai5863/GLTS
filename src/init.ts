@@ -1,14 +1,14 @@
-import glManager from './Manager';
+import {glManager, glAttribute, glUniform, glBuffer} from './Manager';
 import glGeometry from './Geometry';
 import doxas from './doxas';
 
 export default class GLTS {
     constructor(private gl : WebGLRenderingContext | WebGL2RenderingContext){}
 
+    glDoxas = new doxas(this.gl);
     init = new glManager(this.gl).init;
-    getAttributes = new glManager(this.gl).getAttributes;
-    getUniforms = new glManager(this.gl).getUniforms;
-    setUniforms = new glManager(this.gl).setUniforms;
+    glAttribute = new glAttribute(this.gl);
+    glUniform = new glUniform(this.gl);
+    glBuffer = new glBuffer(this.gl);
     Sphere = new glGeometry().Sphere;
-    doxas = new doxas(this.gl);
 }
