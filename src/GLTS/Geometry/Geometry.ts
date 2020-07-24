@@ -1,5 +1,5 @@
 class Geometry {
-    
+	
 	public mat : Float32Array = new Float32Array(16);
 
     public clear() : Float32Array {
@@ -115,7 +115,7 @@ class Geometry {
 		this.mat[14] = (-m * t + n * r - o * q) * ivd;
 		this.mat[15] = ( i * t - j * r + k * q) * ivd;
 		return this.mat;
-    }
+	}
 }
 
 export default Geometry;

@@ -5,7 +5,7 @@ interface AttribInfo {
     stride : number;
 }
 
-interface AttribData {
+interface Attribute {
     location : GLint;
     stride : number;
 }
@@ -16,7 +16,7 @@ interface UniformInfo {
     value : Float32Array | number[] | number; // valueは拡張する必要あり, とりあえずこんなけ
 }
 
-interface UniformData {
+interface Uniform {
     location : WebGLUniformLocation;
     data : UniformInfo; // 全部のデータを設定するのはちょっと無駄
 }
@@ -34,30 +34,31 @@ interface BufferData {
     ibo : WebGLBuffer;
 }
 
-class prgManager {
+class ProgramManager {
     constructor(private gl : WebGLRenderingContext | WebGL2RenderingContext){}
+
+    public wgld = new doxas(this.gl);
 
     public init(vs : string, fs : string) : WebGLProgram {
 
-        let wgld = new doxas(this.gl);
-        let v_shader = wgld.createShader(vs);
-        let f_shader = wgld.createShader(fs);
+        let v_shader = this.wgld.createShader(vs);
+        let f_shader = this.wgld.createShader(fs);
 
-        let program = wgld.createProgram(v_shader, f_shader);
+        let program = this.wgld.createProgram(v_shader, f_shader);
 
         return program;
     }
 }
 
-class attribManager {
+class ShaderManager {
     constructor(private gl : WebGLRenderingContext | WebGL2RenderingContext){}
-    // AttribDataの配列を受け取って, Attributeの配列を返す
-    public add(program : WebGLProgram, attList : AttribInfo[]) : AttribData[] {
+    // Attributeの配列を受け取って, Attributeの配列を返す
+    public addAttribute(program : WebGLProgram, attList : AttribInfo[]) : Attribute[] {
 
-        let attributes : AttribData[] = new Array();
+        let attributes : Attribute[] = new Array();
         
         for (let i : number = 0; i < attList.length; i++) {
-            let attribute : AttribData = {
+            let attribute : Attribute = {
                 location : this.gl.getAttribLocation(program, attList[i].name),
                 stride : attList[i].stride
             };
@@ -66,18 +67,14 @@ class attribManager {
         return attributes;
     }
 
-    public set = new doxas(this.gl).setAttribute;
-}
+    public setAttribute = new doxas(this.gl).setAttribute;
 
-class uniformManager {
-    constructor(private gl : WebGLRenderingContext | WebGL2RenderingContext){}
+    public addUniform(program : WebGLProgram, uniList : UniformInfo[]) : Uniform[] {
 
-    public add(program : WebGLProgram, uniList : UniformInfo[]) : UniformData[] {
-
-        let uniforms : UniformData[] = new Array();
+        let uniforms : Uniform[] = new Array();
 
         for (let i : number = 0; i < uniList.length; i++) {
-            let uniform : UniformData = {
+            let uniform : Uniform = {
                 location : this.gl.getUniformLocation(program, uniList[i].name)!,
                 data : uniList[i]
             };
@@ -86,10 +83,13 @@ class uniformManager {
         return uniforms;
     }
     // これももっと拡張する必要あり
-    public set(uniforms : UniformData[]) : void {
+    public setUniform(uniforms : Uniform[]) : void {
         
         for (let i : number = 0; i < uniforms.length; i++) {
             switch (uniforms[i].data.type) {
+                case '1i':
+                    this.gl.uniform1i(uniforms[i].location, <number>uniforms[i].data.value);
+                    break;
                 case 'm4fv':
                     this.gl.uniformMatrix4fv(uniforms[i].location, false, <Float32Array>uniforms[i].data.value);
                     break;
@@ -110,33 +110,33 @@ class uniformManager {
     }
 }
 
-class bufferManager {
+class BufferManager {
     constructor(private gl : WebGLRenderingContext | WebGL2RenderingContext){}
 
     public wgld = new doxas(this.gl);
 
-    public create = this.wgld.createVBO;
-
     public createIBO = this.wgld.createIBO;
+
+    public createFramebuffer = this.wgld.createFramebuffer;
 
     public createVBO(data : (number[])[]) : WebGLBuffer[] {
 
         let bufferList : WebGLBuffer[] = new Array();
         
         for (let i : number = 0; i < data.length; i++) {
-            bufferList.push(this.create(data[i]));
+            bufferList.push(this.wgld.createVBO(data[i]));
         }
         return bufferList;
     }
 
-    public add(data : GeometryData[]) : BufferData[] {
+    public geometry(data : GeometryData[]) : BufferData[] {
 
         let buffer : BufferData[] = new Array();
         
         for (let i : number = 0; i < data.length; i++) {
             buffer.push({ vbo : new Array(), ibo : new Array() });
 
-            let list : number[][] = [data[i].p, data[i].n, data[i].c];
+            let list : number[][] = [data[i].p, data[i].n, data[i].c, data[i].t];
             let index : number[] = data[i].i;
         
             let VBOs = this.createVBO(list);
@@ -149,4 +149,4 @@ class bufferManager {
     }
 }
 
-export {prgManager, attribManager, uniformManager, bufferManager};
+export {ProgramManager, ShaderManager, BufferManager};

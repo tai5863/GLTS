@@ -1,7 +1,7 @@
 import Color from '../utils/Color';
 import Geometry from './Geometry';
 
-interface data {
+interface info {
     p : number[];
     n : number[];
     c : number[];
@@ -10,12 +10,8 @@ interface data {
 }
 
 class Cube extends Geometry {
-    public init(side : number, color : number[] | string) : data {
+    public init(side : number, color : number[] | string) : info {
         
-        if (color.length != 4) {
-            throw new Error('Geometry Error : The size of the fourth argument must be 4');
-        }
-
         let hs = side * 0.5;
         let pos = [
             -hs, -hs,  hs,  hs, -hs,  hs,  hs,  hs,  hs, -hs,  hs,  hs,
@@ -40,7 +36,12 @@ class Cube extends Geometry {
 
             if (color == 'hsva') {
                 tc = <number[]>new Color().hsva(360 / pos.length / 3 * i, 1, 1, 1);
+            } else if (color == 'texture') {
+                tc = [0, 0, 0, 1];
             } else {
+                if (color.length != 4) {
+                    throw new Error('Geometry Error : The size of the fourth argument must be 4');
+                }
                 tc = <number[]>color;
             }
 

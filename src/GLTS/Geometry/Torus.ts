@@ -1,7 +1,7 @@
 import Color from '../utils/Color';
 import Geometry from './Geometry';
 
-interface data {
+interface info {
     p : number[];
     n : number[];
     c : number[];
@@ -10,11 +10,7 @@ interface data {
 }
 
 class Torus extends Geometry {
-    public init(row : number, column : number, irad : number, orad : number, color : number[] | string) {
-
-        if (color.length != 4) {
-            throw new Error('Geometry Error : The size of the fourth argument must be 4');
-        }
+    public init(row : number, column : number, irad : number, orad : number, color : number[] | string) : info {
 
         let pos : number[]= new Array(), nor : number[]= new Array(),
             col : number[]= new Array(), st : number[]= new Array(), idx : number[] = new Array();
@@ -35,7 +31,12 @@ class Torus extends Geometry {
 
                 if (color == 'hsva') {
                     tc = <number[]>new Color().hsva(360 / row * i, 1, 1, 1);
+                } else if (color == 'texture') {
+                    tc = [0, 0, 0, 1];
                 } else {
+                    if (color.length != 4) {
+                        throw new Error('Geometry Error : The size of the fourth argument must be 4');
+                    }
                     tc = <number[]>color;
                 }
 

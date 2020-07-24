@@ -3,6 +3,12 @@ interface Attribute {
     stride : number;
 }
 
+interface FrameBufferData {
+    f : WebGLFramebuffer;
+    d : WebGLRenderbuffer;
+    t : WebGLTexture;
+}
+
 class doxas {
     constructor(private gl : WebGLRenderingContext | WebGL2RenderingContext){}
 
@@ -100,7 +106,7 @@ class doxas {
     }
 
     // create texture
-    public createTexture(source : string, number : number) : WebGLTexture {
+    public createTexture(source : string) : WebGLTexture {
 
         let img = new Image();
         let tex : WebGLTexture = this.gl.createTexture()!;
@@ -113,12 +119,49 @@ class doxas {
 
             this.gl.generateMipmap(this.gl.TEXTURE_2D);
 
+            this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+			this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+			this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.REPEAT);
+			this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.REPEAT);
+			
             this.gl.bindTexture(this.gl.TEXTURE_2D, null);
         };
         img.src = source;
 
         return tex;
     }
+
+    // create framebuffer
+    public createFramebuffer(width : number, height : number) : FrameBufferData {
+		
+		let frameBuffer : WebGLFramebuffer = this.gl.createFramebuffer()!;
+		
+		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, frameBuffer);
+		
+		let depthRenderBuffer : WebGLRenderbuffer = this.gl.createRenderbuffer()!;
+		this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, depthRenderBuffer);
+		
+		this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.DEPTH_COMPONENT16, width, height);
+		
+		this.gl.framebufferRenderbuffer(this.gl.FRAMEBUFFER, this.gl.DEPTH_ATTACHMENT, this.gl.RENDERBUFFER, depthRenderBuffer);
+		
+		let fTexture : WebGLTexture = this.gl.createTexture()!;
+		
+		this.gl.bindTexture(this.gl.TEXTURE_2D, fTexture);
+		
+		this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, width, height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, null);
+		
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+		
+		this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, fTexture, 0);
+		
+		this.gl.bindTexture(this.gl.TEXTURE_2D, null);
+		this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, null);
+		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+		
+		return {f : frameBuffer, d : depthRenderBuffer, t : fTexture};
+	}
 }
 
 export default doxas;
