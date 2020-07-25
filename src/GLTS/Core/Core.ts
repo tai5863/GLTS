@@ -82,7 +82,7 @@ class ShaderManager {
         }
         return uniforms;
     }
-    // これももっと拡張する必要あり
+
     public setUniform(uniforms : Uniform[]) : void {
         
         for (let i : number = 0; i < uniforms.length; i++) {
@@ -136,7 +136,7 @@ class BufferManager {
         for (let i : number = 0; i < data.length; i++) {
             buffer.push({ vbo : new Array(), ibo : new Array() });
 
-            let list : number[][] = [data[i].p, data[i].n, data[i].c, data[i].t];
+            let list : number[][] = [data[i].p, data[i].n, data[i].c];
             let index : number[] = data[i].i;
         
             let VBOs = this.createVBO(list);

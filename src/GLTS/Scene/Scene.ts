@@ -24,7 +24,7 @@ class Scene {
 
 		this.gl.viewport(0, 0, width, height);
     };
-    
+
 	public draw(tmpMatrix : Float32Array, mvpMatrix : Float32Array, invMatrix : Float32Array, uniforms : Uniform[], mode : GLenum, count : number, geometry : Geometry) : void {
 		
 		let m = new matIV();
@@ -38,7 +38,7 @@ class Scene {
         manager.setUniform(uniforms);
         
         this.gl.drawElements(mode, count, this.gl.UNSIGNED_SHORT, 0);
-	}
+    }
 }
 
 export default Scene;

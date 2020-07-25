@@ -131,6 +131,45 @@ class doxas {
         return tex;
     }
 
+    // create cube texture
+    public createCubeTexture(source : string[]) : WebGLTexture {
+
+        let cImg : HTMLImageElement[] = new Array();
+
+        let tex : WebGLTexture = this.gl.createTexture()!;
+
+        for (let i : number = 0; i < source.length; i++) {
+
+            let data : HTMLImageElement = new Image();
+
+            data.onload = () => {
+                cImg.push(data);
+                
+                if (i == 5) {
+                    this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, tex);
+            
+                    this.gl.texImage2D(this.gl.TEXTURE_CUBE_MAP_POSITIVE_X, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, cImg[0]);
+                    this.gl.texImage2D(this.gl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, cImg[1]);
+                    this.gl.texImage2D(this.gl.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, cImg[2]);
+                    this.gl.texImage2D(this.gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, cImg[3]);
+                    this.gl.texImage2D(this.gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, cImg[4]);
+                    this.gl.texImage2D(this.gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, cImg[5]);
+                    
+                    this.gl.generateMipmap(this.gl.TEXTURE_CUBE_MAP);
+                    
+                    this.gl.texParameteri(this.gl.TEXTURE_CUBE_MAP, this.gl.TEXTURE_MIN_FILTER, this.gl.LINEAR);
+                    this.gl.texParameteri(this.gl.TEXTURE_CUBE_MAP, this.gl.TEXTURE_MAG_FILTER, this.gl.LINEAR);
+                    this.gl.texParameteri(this.gl.TEXTURE_CUBE_MAP, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+                    this.gl.texParameteri(this.gl.TEXTURE_CUBE_MAP, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+
+                    this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, null);
+                }
+            }
+            data.src = source[i];
+        }
+        return tex;
+    }
+
     // create framebuffer
     public createFramebuffer(width : number, height : number) : FrameBufferData {
 		
@@ -161,7 +200,7 @@ class doxas {
 		this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
 		
 		return {f : frameBuffer, d : depthRenderBuffer, t : fTexture};
-	}
+    }
 }
 
 export default doxas;

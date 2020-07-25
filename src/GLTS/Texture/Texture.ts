@@ -1,18 +1,20 @@
 import doxas from '../Core/doxas';
 
-class Texture {
+class TextureManager {
     constructor(private gl : WebGLRenderingContext | WebGL2RenderingContext){}
 
-    public init(texture : GLenum, source : string) : WebGLTexture {
+    private wgld = new doxas(this.gl);
+
+    public createTexture(texture : GLenum, source : string) : WebGLTexture {
         
         this.gl.activeTexture(texture);
 
-        let wgld = new doxas(this.gl);
-
-        let tex : WebGLTexture =  wgld.createTexture(source);
+        let tex : WebGLTexture =  this.wgld.createTexture(source);
 
         return tex;
     }
+
+    public createCubeTexture = this.wgld.createCubeTexture;
 }
 
-export default Texture;
+export default TextureManager;

@@ -1,7 +1,7 @@
 import {ProgramManager, ShaderManager, BufferManager} from './Core/Core';
 import Scene from './Scene/Scene';
 import PerspectiveCamera from './Camera/Perspective';
-import Texture from './Texture/Texture';
+import TextureManager from './Texture/Texture';
 import Sphere from './Geometry/Sphere';
 import Torus from './Geometry/Torus';
 import Cube from './Geometry/Cube';
@@ -17,7 +17,7 @@ export default class GLTS {
     BufferManager = new BufferManager(this.gl);
     Scene = new Scene(this.gl);
     PerspectiveCamera = PerspectiveCamera;
-    Texture = new Texture(this.gl);
+    TextureManager = new TextureManager(this.gl);
     Sphere = Sphere;
     Torus = Torus;
     Cube = Cube;

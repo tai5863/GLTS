@@ -7,33 +7,40 @@
     attribute vec3 position;
     attribute vec3 normal;
     attribute vec4 color;
-    attribute vec2 textureCoord;
     uniform   mat4 mMatrix;
     uniform   mat4 mvpMatrix;
-    uniform   mat4 invMatrix;
-    uniform   vec3 lightDirection;
+    varying   vec3 vPosition;
+    varying   vec3 vNormal;
     varying   vec4 vColor;
-    varying   vec2 vTextureCoord;
     
-    void main(void) {
-      vec3 invLight = normalize(invMatrix * vec4(lightDirection, 0.0)).xyz;
-      float diffuse = clamp(dot(normal, invLight), 0.2, 1.0);
-      vColor = vec4(color.xyz * vec3(diffuse), 1.0);
-      vTextureCoord  = textureCoord;
-      gl_Position    = mvpMatrix * vec4(position, 1.0);
+    void main(void){
+      vPosition   = (mMatrix * vec4(position, 1.0)).xyz;
+      vNormal     = (mMatrix * vec4(normal, 0.0)).xyz;
+      vColor      = color;
+      gl_Position = mvpMatrix * vec4(position, 1.0);
     }
     </script>
                 
     <script id="fs" type="x-shader/x-fragment">
     precision mediump float;
 
-    uniform sampler2D texture;
-    varying vec4      vColor;
-    varying vec2      vTextureCoord;
+    uniform vec3        eyePosition;
+    uniform samplerCube cubeTexture;
+    uniform bool        reflection;
+    varying vec3        vPosition;
+    varying vec3        vNormal;
+    varying vec4        vColor;
     
     void main(void) {
-      vec4 smpColor = texture2D(texture, vTextureCoord);
-      gl_FragColor  = vColor + smpColor;
+      vec3 ref;
+      if (reflection) {
+        ref = reflect(vPosition - eyePosition, vNormal);
+      } else {
+        ref = vNormal;
+      }
+      vec4 envColor  = textureCube(cubeTexture, ref);
+      vec4 destColor = vColor * envColor;
+      gl_FragColor   = destColor;
     }
     </script>
   </head>

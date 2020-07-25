@@ -1,3 +1,16 @@
+import {ShaderManager} from '../Core/Core';
+
+interface UniformInfo {
+    name : string;
+    type : string;
+    value : Float32Array | number[] | number; // valueは拡張する必要あり, とりあえずこんなけ
+}
+
+interface Uniform {
+    location : WebGLUniformLocation;
+    data : UniformInfo; // 全部のデータを設定するのはちょっと無駄
+}
+
 class Geometry {
 	
 	public mat : Float32Array = new Float32Array(16);
