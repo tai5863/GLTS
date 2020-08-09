@@ -1,12 +1,13 @@
 {
   "name": "glts",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "WebGL library developed with Typescript.",
   "main": "./public/lib/GLTS.js",
   "types": "./public/lib/GLTS.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode=development",
+    "build": "npx webpack --config webpack.config.js",
+    "prepare": "npm run build",
     "start": "webpack-dev-server --mode=development"
   },
   "repository": {
