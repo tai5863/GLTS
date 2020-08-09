@@ -1,11 +1,9 @@
 {
-  "name": "GLTS",
+  "name": "glts",
   "version": "1.0.0",
-  "description": "Typescript practice developing with WebGL.",
-  "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
+  "description": "WebGL library developed with Typescript.",
+  "main": "./public/lib/GLTS.js",
+  "types": "./public/lib/GLTS.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode=development",
@@ -16,13 +14,16 @@
     "url": "git+https://github.com/tai5863/GLTS.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Taichi Uchida",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/tai5863/GLTS/issues"
   },
   "homepage": "https://github.com/tai5863/GLTS#readme",
   "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "babel-loader": "^8.1.0",
     "ts-loader": "^8.0.1",
     "typescript": "^3.9.7",
     "webpack": "^4.43.0",
