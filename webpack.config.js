@@ -21,7 +21,10 @@ module.exports = {
     // 例えば「import Foo from './foo'」という記述に対して"foo.ts"という名前のファイルをモジュールとして探す
     // デフォルトは['.js', '.json']
     resolve: {
-        extensions:['.ts','.js']
+        extensions:['.ts','.js'],
+        alias: {
+			"@glts": path.resolve( __dirname, './src/' )
+		}
     },
     devServer: {
         // webpack-dev-serverの公開フォルダ

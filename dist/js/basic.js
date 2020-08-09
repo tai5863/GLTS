@@ -1,4 +1,4 @@
-import '../../public/lib/GLTS.js';
+import GLTS from '../../public/lib/GLTS.js';
 
 window.onload = () => {
     const canvas = document.body.appendChild(document.createElement('canvas'));
