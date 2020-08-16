@@ -1,6 +1,6 @@
 {
   "name": "glts",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "WebGL library developed with Typescript.",
   "type": "module",
   "main": "./public/lib/GLTS.js",
