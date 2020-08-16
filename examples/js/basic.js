@@ -1,5 +1,3 @@
-import GLTS from 'GLTS.js';
-
 window.onload = () => {
     const canvas = document.body.appendChild(document.createElement('canvas'));
 	const gl = canvas.getContext('webgl');

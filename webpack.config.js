@@ -15,7 +15,7 @@ module.exports = {
         filename: '[name].js',  // [name]はentryで記述した名前(この例ではbundle）が入る
         library: 'GLTS',
         libraryTarget: 'umd',
-		libraryExport: "default"
+		    libraryExport: "default"
     },
     // モジュールとして扱いたいファイルの拡張子を指定する
     // 例えば「import Foo from './foo'」という記述に対して"foo.ts"という名前のファイルをモジュールとして探す
@@ -28,7 +28,7 @@ module.exports = {
     },
     devServer: {
         // webpack-dev-serverの公開フォルダ
-        contentBase: path.join(__dirname,'dist')
+        contentBase: path.join(__dirname,'../GLTS/')
     },
     // モジュールに適用するルールの設定（ここではローダーの設定を行う事が多い）
     module: {
