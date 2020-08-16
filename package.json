@@ -1,6 +1,6 @@
 {
   "name": "glts",
-  "version": "1.0.1",
+  "version": "0.0.1",
   "description": "WebGL library developed with Typescript.",
   "type": "module",
   "main": "./public/lib/GLTS.js",
@@ -15,7 +15,9 @@
     "type": "git",
     "url": "git+https://github.com/tai5863/GLTS.git"
   },
-  "keywords": ["webgl"],
+  "keywords": [
+    "webgl"
+  ],
   "author": "tai5863",
   "license": "MIT",
   "bugs": {
