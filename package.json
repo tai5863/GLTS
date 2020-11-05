@@ -2,7 +2,6 @@
   "name": "glts",
   "version": "0.1.0",
   "description": "WebGL library developed with Typescript.",
-  "type": "module",
   "main": "./public/lib/GLTS.js",
   "types": "./public/lib/GLTS.d.ts",
   "scripts": {
@@ -31,7 +30,7 @@
     "ts-loader": "^8.0.1",
     "typescript": "^3.9.7",
     "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12",
+    "webpack-cli": "^4.2.0",
     "webpack-dev-server": "^3.11.0"
   }
 }
