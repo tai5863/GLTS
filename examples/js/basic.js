@@ -63,7 +63,7 @@ window.onload = () => {
 			{ name : 'invMatrix', type : 'm4fv', value : invMatrix },
 			{ name : 'lightDirection', type : '3fv', value : lightDirection }
 		];
-		glts.Scene.draw(tmpMatrix, mvpMatrix, invMatrix, glts.ShaderManager.addUniform(prg, uniInfo), gl.LINE_STRIP, tData.i.length, torus);
+		glts.Scene.draw(tmpMatrix, mvpMatrix, invMatrix, glts.ShaderManager.addUniform(prg, uniInfo), gl.POINTS, tData.i.length, torus);
 		
 		gl.flush();
 
